@@ -12,9 +12,8 @@ class ListViewCards extends Component {
         this.setState({ decks : this.props.getAllDecks() })
     }
 
-    gotoDetail=(title, cardCount)=>(
-        //console.log("Item ", title)
-        this.props.navigation.navigate('Quiz',{title:title, count: cardCount})
+    gotoDetail=(item)=>(
+        this.props.navigation.navigate('Quiz',{deck:item})
     )
         //this.props.navigation.navigate('Quiz',{title:title})
         //const navigate = this.props.navigation.navigate('Quiz')
@@ -43,8 +42,8 @@ class ListViewCards extends Component {
                                 badge={{value:item.questions.length, textStyle:{color:white}, containerStyle:{backgroundColor:lightPurp, marginTop:3} }}
                                 rightIcon={{style:{fontSize:28, color:white}}}
                                 value={item.title}
-                                onPress={()=>this.gotoDetail(item.title, item.questions.length)}
-                                onPressRightIcon={()=>this.gotoDetail(item.title, item.questions.length)}
+                                onPress={()=>this.gotoDetail(item)}
+                                onPressRightIcon={()=>this.gotoDetail(item)}
                             />
                         )}
                     />

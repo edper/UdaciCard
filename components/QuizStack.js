@@ -5,33 +5,41 @@ import { Button } from 'react-native-elements'
 
 
 class QuizStack extends Component {
-    state = {
-        currentCard:0,
-        totalCards:0,
-    }
+
+    gotoQuizView=(deck)=>(
+        this.props.navigation.navigate('QuizShow',{deck:deck})
+    )
+
+    gotoAddCard=(deck)=> (
+        this.props.navigation.navigate('AddCard',{deck:deck})        
+    )
+
     render() {
-        const {title, count} = this.props.navigation.state.params
+        const {deck} = this.props.navigation.state.params
         return (
-            <View style={{flex:1, flexDirection:'column', justifyContent:'center', backgroundColor:lightBlue}}>
-                <View style={{flex:4, marginTop:40, marginBottom:40, alignItems:'center'}}>
-                    <Text style={{fontSize:36, color:black, fontWeight:'bold'}}>{title}</Text>
-                    <Text style={{fontSize:28, color:gray, fontStyle:'italic'}}>{count} {count>1?'cards':'card'}</Text>
+            <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
+                <View style={{flex:8, marginTop:40, marginBottom:40, alignItems:'center', justifyContent:'center', backgroundColor:lightBlue}}>
+                    <Text style={{fontSize:36, color:black, fontWeight:'bold'}}>{deck.title}</Text>
+                    <Text style={{fontSize:24, color:gray, fontStyle:'italic'}}>{deck.questions.length} {deck.questions.length>1?'cards':'card'}</Text>
                 </View>
-                <View style={{flex:4}}>
+                <View style={{flex:1, justifyContent:'flex-start'}}>
                     <Button
                         raised
                         backgroundColor={white}
                         color={black}
                         icon={{name: 'add-circle-outline', color:black}}
+                        onPress={()=>this.gotoAddCard(deck)}
                         title='Add Card' />
 
                 </View>
-                <View style={{flex:28}}>
+                <View style={{flex:1, justifyContent:'flex-start'}}>
                     <Button
                         raised
                         backgroundColor={lightPurp}
                         icon={{name: 'play-circle-outline'}}
-                        title='Start Quiz' />
+                        onPress={()=>this.gotoQuizView(deck)}
+                        title='Start Quiz' 
+                        />
                 </View>
             </View>            
         )

@@ -30,10 +30,10 @@ const initialData = {
 }
 
 
-export function addEntry(entry) {
+export function addEntry(decks) {
     return {
         type: ADD_ENTRY,
-        entry,
+        decks,
     }        
 }
 
@@ -118,13 +118,14 @@ export function getDeck({id}) {
 }
 
 export function saveDeckTitle({title}) {
-    AsyncStorage.mergeItem(UDACI_CARDS_KEY, json.stringify({
+    AsyncStorage.mergeItem(UDACI_CARDS_KEY, JSON.stringify({
         [title]:{},
     }))
 }
 
-export function addCardToDeck({title, card}) {
-    AsyncStorage.mergeItem(UDACI_CARDS_KEY, json.stringify({
+export function addCardToDeck(title, card) {
+    return AsyncStorage.mergeItem(UDACI_CARDS_KEY, JSON.stringify({
         [title]:card,
-    }))
+    })).then((data)=>{ console.log("Data",data); dispatch(addEntry(data)) })
+    .catch((error)=>{console.log('Adding card in a deck error : ',error)});     
 }
