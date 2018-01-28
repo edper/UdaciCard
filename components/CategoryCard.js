@@ -1,16 +1,18 @@
 import React, {Component} from 'react'
-import { StackNavigator } from 'react-navigation'
+import { StackNavigator, TabNavigator } from 'react-navigation'
 import {connect} from 'react-redux'
 import {getAllDecks, initializeData} from '../actions'
 import {List, ListItem} from 'react-native-elements'
 import { StyleSheet, Text, View, FlatList, StatusBar  } from 'react-native'
 import { white, gray, lightGray, lightPurp, black, purple, lightBlue } from '../utils/colors'
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import ListViewCards from './ListViewCards'
 import QuizStack from './QuizStack'
 import QuizView from './QuizView'
 import AddNewCard from './AddNewCard'
-import {MaterialCommunityIcons} from '@expo/vector-icons'
+import AddNewDeck from './AddNewDeck'
+import { setLocalNotification } from '../utils/helper'
+
 
 const Quiz = ({ navigation }) => (
     <QuizStack navigation={navigation}/>
@@ -20,12 +22,16 @@ const QuizShow = ({ navigation }) => (
     <QuizView navigation={navigation}/>
 )
 
-const Home = ({ navigation }) => (
+const HomeView = ({ navigation }) => (
     <ListViewCards navigation={navigation}/>
 )
 
 const AddCard = ({ navigation }) => (
     <AddNewCard navigation={navigation}/>
+)
+
+const AddDeck = ({ navigation }) => (
+    <AddNewDeck navigation={navigation} hasFocus={true}/>
 )
 
 const headerLogo = () => (
@@ -46,12 +52,28 @@ const headerLogo = () => (
     </View>
 )
 
+const Tabs = TabNavigator({
+    HomeView : {
+      screen: HomeView,
+      navigationOptions : {
+        tabBarLabel: 'Home',
+        header: headerLogo,
+        tabBarIcon: ({tintColor}) => <Ionicons name='md-home' size={30} color={tintColor} />,
+    },
+    },
+    AddDeck : {
+        screen: AddDeck,
+        navigationOptions : {
+          tabBarLabel: 'Add Deck',
+          header: headerLogo,
+          tabBarIcon: ({tintColor}) => <Ionicons name='md-add-circle' size={30} color={tintColor} />,
+        },
+      },
+})
+
 const Stack = StackNavigator({
     Home: {
-        screen: Home,
-        navigationOptions: {
-            header: headerLogo,
-        },
+        screen: Tabs,
     },
     Quiz: {
         screen: Quiz,
@@ -85,6 +107,7 @@ class CategoryCard extends Component {
     componentDidMount(){
         //this.props.initializeData()
         this.setState({ decks : this.props.getAllDecks() })
+        setLocalNotification()
     }
 
     render() {

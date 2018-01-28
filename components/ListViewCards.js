@@ -8,12 +8,13 @@ import {List, ListItem} from 'react-native-elements'
 
 class ListViewCards extends Component {
 
-    componentWillMount(){
-        this.setState({ decks : this.props.getAllDecks() })
+    componentDidMount(){
+        //this.setState({ decks : this.props.getAllDecks() })
+        this.props.getAllDecks()
     }
 
     gotoDetail=(item)=>(
-        this.props.navigation.navigate('Quiz',{deck:item})
+        this.props.navigation.navigate('Quiz',{title:item.title})
     )
         //this.props.navigation.navigate('Quiz',{title:title})
         //const navigate = this.props.navigation.navigate('Quiz')

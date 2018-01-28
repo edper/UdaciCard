@@ -7,5 +7,5 @@ export const blue = '#4e4cb8'
 export const lightPurp = '#7c53c3'
 export const pink = '#b93fb3'
 export const black = "#000"
-export const darkGray = "#333"
+export const darkGray = "#484848"
 export const lightBlue = "#9fc9f4"

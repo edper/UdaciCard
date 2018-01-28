@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import { StyleSheet, Text, View, Animated, Easing } from 'react-native'
 import { white, gray, lightGray, lightPurp, black, lightBlue, purple } from '../utils/colors'
 import { Button } from 'react-native-elements'
+import { 
+    clearLocalNotification,
+    setLocalNotification } from '../utils/helper'
 
 class QuizView extends Component {
     state = {
@@ -16,6 +19,8 @@ class QuizView extends Component {
 
     componentWillMount() {
         this.setState(()=>({deck:this.props.navigation.state.params}))
+        clearLocalNotification()
+        setLocalNotification()       
     }
 
     animateFlip=()=> {
@@ -25,7 +30,7 @@ class QuizView extends Component {
             {
               toValue: 1,
               duration: 1500,
-              easing: Easing.linear
+              easing: Easing.bounce
             }
           ).start()
     }
@@ -67,13 +72,21 @@ class QuizView extends Component {
         this.props.navigation.navigate('Home')
     }
 
+    goReplay=()=> {
+        this.setState({
+            currentCard:0,
+            flipSide:false,
+            endOfQue:false,
+            correctCard:0,
+        })
+    }
     
     render() {
         const flipSide = this.state.flipSide
         const endOfQue = this.state.endOfQue
         const rotateX = this.state.animatedValue.interpolate({
             inputRange: [0, 0.5, 1],
-            outputRange: ['0deg', '-90deg', '0deg']
+            outputRange: ['0deg', '90deg', '0deg']
         })
         const spin = this.state.spinValue.interpolate({
             inputRange: [0, 1],
@@ -93,7 +106,7 @@ class QuizView extends Component {
                                     <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-start'}}>
                                         <Text style={{fontSize:22, color:gray, fontWeight:'bold'}}>{this.state.currentCard+1} of {this.state.deck.deck.questions.length}</Text>
                                     </View>
-                                    <View style={{flex:8, justifyContent:'center'}}>
+                                    <View style={{flex:8, justifyContent:'center', alignItems:'center' , paddingLeft:20,paddingRight:20}}>
                                         <Text style={{fontSize:28, color:purple, fontWeight:'bold'}}>{this.state.currentCard < this.state.deck.deck.questions.length && this.state.deck.deck.questions[this.state.currentCard].question}</Text>
                                     </View>
                                 </View>
@@ -116,7 +129,7 @@ class QuizView extends Component {
                                 <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-start'}}>
                                     <Text style={{fontSize:22, color:gray, fontWeight:'bold'}}>{this.state.currentCard+1} of {this.state.deck.deck.questions.length}</Text>
                                 </View>
-                                <View style={{flex:5, justifyContent:'center'}}>
+                                <View style={{flex:5, justifyContent:'center', paddingLeft:20,paddingRight:20}}>
                                     <Text style={{fontSize:28, color:black, fontWeight:'bold'}}>{this.state.deck.deck.questions[this.state.currentCard].answer}</Text>
                                 </View>
                                 <View style={{flex:2, justifyContent:'center'}}>
@@ -150,7 +163,15 @@ class QuizView extends Component {
                                 <Text style={{fontSize:28, fontWeight:'bold'}}>{this.state.correctCard} of {this.state.deck.deck.questions.length}</Text>
                                 <Text style={{fontSize:28, fontWeight:'bold'}}>of your {this.state.correctCard > 1 ? 'answers are' : 'answer is'} correct.</Text>
                             </View>
-                            <View style={{flex:2}}>
+                            <View style={{flex:1}}>
+                                <Button
+                                    raised
+                                    backgroundColor={purple}
+                                    title='Redo Quiz' 
+                                    onPress={this.goReplay}
+                                />
+                            </View>
+                            <View style={{flex:1}}>
                                 <Button
                                     raised
                                     backgroundColor={purple}
