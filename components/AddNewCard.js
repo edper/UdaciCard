@@ -4,9 +4,12 @@ import { white, gray, darkGray, lightPurp, black, lightBlue, purple } from '../u
 import { Button } from 'react-native-elements'
 import {connect} from 'react-redux'
 import { addCardToDeck } from '../actions'
+import { FormLabel, FormInput } from 'react-native-elements'
 
+// Component for adding new card in a deck
 class AddNewCard extends Component {
     
+    // Component state
     state = {
         question: '',
         answer: '',
@@ -15,33 +18,49 @@ class AddNewCard extends Component {
         toastMessage:'',
     }
 
+    // Event handler when user press the submit button
     submit=()=> {
         const answer = this.state.answer 
         const question = this.state.question
+        // Check if answer or question is empty
         if (answer==='' || question === '') {
+            // Inform user if empty
             this.setState({hasError:true})
             this.showToast('Entry should not be empty!')
             return
         }
+        // Prepare data
         this.setState({hasError:false})
         const card = {answer:this.state.answer, question:this.state.question}
         let deck = this.props.navigation.state.params
         let title = deck.deck.title
+
+        // Update array of questions
         deck.deck.questions.push(card)
+        
+        // Dispatch an action for adding a Card to a Deck         
         const item = deck.deck
         this.props.addCardToDeck({title, item})
+
+        // Show toast and cleanup
         this.showToast('New Card successfully added!')
-        this.textQuestion.clear()
-        this.textAnswer.clear()
+        this.textQuestion.refs.deckQuestion.clear()
+        this.textAnswer.refs.deckAnswer.clear()
         this.setState({answer:'', question:''})
-        this.textQuestion.focus()
+        this.textQuestion.refs.deckQuestion.focus()
     }
 
+    // Show toast function
     showToast=(msg)=> {
         this.setState({visible: true, toastMessage:msg})
         setTimeout(() => this.setState({
             visible: false
         }), 1500)
+    }
+
+    // make sure that when component mounts Question entry is on focus
+    componentDidMount() {
+        this.textQuestion.refs.deckQuestion.focus()
     }
 
     render() {
@@ -51,25 +70,26 @@ class AddNewCard extends Component {
         return (
             <View style={{flex:1, flexDirection:'column'}}>
                 <View style={{flex:1, paddingLeft:20, paddingTop:40, paddingRight:20, paddingBottom:15}}>
-                    <Text style={{fontWeight:'bold'}}>Question</Text>
-                    <TextInput
-                        autoFocus
-                        style={styles.input}
-                        placeholder="Type Question here!"
+                    <FormLabel>QUESTION</FormLabel>
+                    <FormInput 
+                        placeholder="Type Question here"
+                        style={styles.input}                        
                         ref={input => { this.textQuestion = input }}
+                        textInputRef='deckQuestion'
                         onBlur={() => this.textAnswer.focus()}
                         onSubmitEditing={() => this.textAnswer.focus()}
                         onChangeText={(question) => this.setState({question})}
                     />
                 </View>
                 <View style={{flex:1, paddingLeft:20, paddingTop:60, paddingRight:20}}>
-                    <Text style={{fontWeight:'bold'}}>Answer</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Type Answer here here!"
+                    <FormLabel>ANSWER</FormLabel>
+                    <FormInput 
+                        placeholder="Type Answer here"
+                        style={styles.input}                        
+                        ref={input => { this.textAnswer= input }}
+                        textInputRef='deckAnswer'
                         onBlur={() => this.submitButton.focus()}
                         onSubmitEditing={() => this.submitButton.focus()}
-                        ref={input => { this.textAnswer = input }}
                         onChangeText={(answer) => this.setState({answer})}
                     />
                 </View>

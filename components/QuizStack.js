@@ -5,17 +5,20 @@ import { Button } from 'react-native-elements'
 import {connect} from 'react-redux'
 import { getAllDecks } from '../actions'
 
-
+// Component for Showing a specific Deck ready for Quiz or Adding a Card
 class QuizStack extends Component {
 
+    // Navigate to Quiz proper when user press Start Quiz
     gotoQuizView=(deck)=>(
         this.props.navigation.navigate('QuizShow',{deck:deck})
     )
 
+    // Navigate to adding a Card to a Deck when user press Add Card
     gotoAddCard=(deck)=> (
         this.props.navigation.navigate('AddCard',{deck:deck})        
     )
 
+    // Make sure state for all decks is updated
     componentDidMount() {
         this.props.getAllDecks()
     }

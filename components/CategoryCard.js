@@ -14,26 +14,32 @@ import AddNewDeck from './AddNewDeck'
 import { setLocalNotification } from '../utils/helper'
 
 
+// Navigation for Quiz startup/summary page
 const Quiz = ({ navigation }) => (
     <QuizStack navigation={navigation}/>
 )
 
+// Navigation for Quiz proper
 const QuizShow = ({ navigation }) => (
     <QuizView navigation={navigation}/>
 )
 
+// Navigation for Home
 const HomeView = ({ navigation }) => (
     <ListViewCards navigation={navigation}/>
 )
 
+// Navigation for adding a Card
 const AddCard = ({ navigation }) => (
     <AddNewCard navigation={navigation}/>
 )
 
+// Navigation for adding a Deck
 const AddDeck = ({ navigation }) => (
     <AddNewDeck navigation={navigation} hasFocus={true}/>
 )
 
+// Header with logo
 const headerLogo = () => (
     <View style={[styles.header,{marginTop:1}]}>
         <View>
@@ -52,7 +58,9 @@ const headerLogo = () => (
     </View>
 )
 
+// Tabs for Tab Navigator
 const Tabs = TabNavigator({
+    // Home Tab
     HomeView : {
       screen: HomeView,
       navigationOptions : {
@@ -61,6 +69,7 @@ const Tabs = TabNavigator({
         tabBarIcon: ({tintColor}) => <Ionicons name='md-home' size={30} color={tintColor} />,
     },
     },
+    // Add Deck Tab
     AddDeck : {
         screen: AddDeck,
         navigationOptions : {

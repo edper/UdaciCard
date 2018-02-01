@@ -4,14 +4,15 @@ import { Notifications, Permissions } from 'expo'
 
 const NOTIFICATION_KEY = 'Udacicard:ed_notifications'
 
-
+// Function for clearing Local notifications
 export function clearLocalNotification() {
     return 
       AsyncStorage.removeItem(NOTIFICATION_KEY)
       .then(Notifications.cancelAllScheduledNotificationsAsync)
-  }
-  
-  function createNotification() {
+}
+
+// Function for creating data for notification
+function createNotification() {
    return {
      title: 'Study reminder',
      body:  "👋 don't forget to study today!",
@@ -27,7 +28,9 @@ export function clearLocalNotification() {
    }
   }
   
-  export function setLocalNotification() {
+
+// Wrapper for creating a new notification
+export function setLocalNotification() {
     AsyncStorage.getItem(NOTIFICATION_KEY)
     .then((JSON.parse))
     .then((data)=>{
@@ -43,7 +46,8 @@ export function clearLocalNotification() {
     })
   }
 
-  function setNotification() {
+// Actual function for creating a notification
+function setNotification() {
 
     Notifications.cancelAllScheduledNotificationsAsync()
     

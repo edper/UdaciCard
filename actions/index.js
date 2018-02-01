@@ -5,8 +5,9 @@ export const ADD_DECK = 'ADD_DECK'
 export const GET_DECK = 'GET_DECK'
 export const CLICK_ADD = 'CLICK_ADD'
 import {AsyncStorage} from 'react-native'
-const UDACI_CARDS_KEY = 'UdaciCards:edper'
+const UDACI_CARDS_KEY = 'UdaciCards:John316'
 
+// Dummy Initial Data
 const initialData = {
     React: {
       title: 'React',
@@ -37,7 +38,7 @@ const initialData = {
     },  
 }
 
-
+// Action for adding a Card to a Deck
 export function addEntry(decks) {
     return {
         type: ADD_CARD,
@@ -45,6 +46,7 @@ export function addEntry(decks) {
     }        
 }
 
+// Action for adding a Deck
 export function addDeck(decks) {
     return {
         type: ADD_DECK,
@@ -52,6 +54,7 @@ export function addDeck(decks) {
     }        
 }
 
+// Action for getting multiple Decks
 export function getDecks(decks) {
     return {
         type: GET_DECKS,
@@ -59,6 +62,7 @@ export function getDecks(decks) {
     }        
 }
 
+// Action for getting a single Deck
 export function getSingleDeck(deck) {
     return {
         type: GET_DECK,
@@ -66,9 +70,12 @@ export function getSingleDeck(deck) {
     }        
 }
 
+// Actual function for initializing dummy data
 function setInitialData() {
     AsyncStorage.setItem(UDACI_CARDS_KEY, JSON.stringify(initialData))
 }
+
+// Wrapper for data initialization
 export function initializeData()
 {
 
@@ -76,16 +83,9 @@ export function initializeData()
     return AsyncStorage.getItem(UDACI_CARDS_KEY).then((result)=>{
         result
     })
-   //const res = AsyncStorage.setItem(UDACI_CARDS_KEY, JSON.stringify(initialData),
-   // ()=>{ AsyncStorage.getItem(UDACI_CARDS_KEY,
-   //        (err, result)=>{
-   //          result
-   //        })
-   // })
-   // console.log("res = ",res)
-   // res
 }
 
+// Async storage data initializer
 export function get() {
     AsyncStorage.getItem(UDACI_CARDS_KEY)
     .then((result)=>{
@@ -109,6 +109,7 @@ export function get() {
     .catch((error)=>{console.log('Fetching all decks error : ',error)});          
 }
 
+// dispatcher for fetching all Decks of cards
 export function getAllDecks() {
     return (dispatch) => {
         let first = AsyncStorage.getItem(UDACI_CARDS_KEY)
@@ -131,6 +132,7 @@ export function getAllDecks() {
     }
 }
 
+// dispatcher for fetching a single Deck
 export function getDeck(title) {
     return (dispatch)=> {
         AsyncStorage.getItem(UDACI_CARDS_KEY)
@@ -138,23 +140,17 @@ export function getDeck(title) {
            dispatch(getSingleDeck(decks))
         )    
     }
-    //.then((results)=>{
-    //    const data = JSON.parse(results)
-    //    return data[title]
-    //})    
 }
 
+// dispatcher for saving a Deck/Title
 export function saveDeckTitle({title}) {
     AsyncStorage.mergeItem(UDACI_CARDS_KEY, JSON.stringify({
         [title]:{},
     }))
 }
 
+// dispatcher for adding a card to a Deck
 export function addCardToDeck({title, item}) {
-    //console.log("The title", title)
-    //console.log("The card", item)
-    //const updatedDeck = {[title]:item}
-    //console.log("Updated deck", updatedDeck)
     return (dispatch) => 
     { 
         AsyncStorage.mergeItem(UDACI_CARDS_KEY, JSON.stringify({
@@ -168,6 +164,7 @@ export function addCardToDeck({title, item}) {
     }   
 }
 
+// // dispatcher for adding a new Deck with no cards yet
 export function addNewDeck(title) {
     return (dispatch) => 
     { 

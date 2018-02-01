@@ -3,9 +3,12 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard } from 'r
 import { white, gray, darkGray, lightPurp, black, lightBlue, purple } from '../utils/colors'
 import {connect} from 'react-redux'
 import { addNewDeck } from '../actions'
+import { FormLabel, FormInput } from 'react-native-elements'
 
+// Component for adding new Deck
 class AddNewDeck extends Component {
     
+    // Component state
     state = {
         title: '',
         isVisible: false,
@@ -14,22 +17,30 @@ class AddNewDeck extends Component {
         message:''
     }
 
+    // Event handler when user press the submit button
     submitNewDeck=()=> {
         const title = this.state.title
+        // Check if title is empty
         if (title === '')
-           {
-               this.setState({isError:true})
-               this.showToast('Title should not be empty!')
-               return 
-           }
+        {
+            // Inform user if empty
+            this.setState({isError:true})
+            this.showToast('Title should not be empty!')
+            return 
+        }
+
+        // Dispatch an action for adding a Card        
         this.setState({isError:false})
         this.props.addNewDeck(title)
-        //this.showToast('New Deck successfully added!')
-        this.textDeckTitle.clear()
+        
+        // Show toast and cleanup
+        this.showToast('New Deck successfully added!')
+        this.textDeckTitle.refs.deckTitle.clear()
         this.setState({title:''})
-        this.textDeckTitle.focus()
+        this.textDeckTitle.refs.deckTitle.focus()
     }
 
+    // Show toast function
     showToast=(msg)=> {
         this.setState(()=>({isVisible: true, message:msg}))
         setTimeout(() => this.setState({
@@ -37,6 +48,7 @@ class AddNewDeck extends Component {
         }), 1500)
     }
 
+    // make sure that when component mounts Title entry is on focus
     componentDidMount() {
         this.textDeckTitle.focus()
         Keyboard.dismiss()
@@ -47,13 +59,12 @@ class AddNewDeck extends Component {
         return (
             <View style={{flex:1, flexDirection:'column'}}>
                 <View style={{flex:1, paddingLeft:20, paddingTop:40, paddingRight:20}}>
-                    <Text style={{fontWeight:'bold', paddingBottom:10}}>Deck Title</Text>
-                    <TextInput
-                        style={styles.inputText}
+                    <FormLabel>DECK TITLE</FormLabel>
+                    <FormInput 
                         placeholder="Type Deck title here"
+                        style={styles.inputText} 
                         ref={input => { this.textDeckTitle = input }}
-                        onPress={()=>this.textDeckTitle.focus()}
-                        onSubmitEditing={Keyboard.dismiss}
+                        textInputRef='deckTitle'
                         onChangeText={(title) => this.setState({title:title})}
                     />
                 </View>

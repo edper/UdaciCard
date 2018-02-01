@@ -19,6 +19,9 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "appcenter": "^1.1.0",
+    "appcenter-analytics": "^1.1.0",
+    "appcenter-crashes": "^1.1.0",
     "expo": "^24.0.2",
     "react": "16.0.0",
     "react-native": "0.50.3",
@@ -26,6 +29,7 @@
     "react-navigation": "^1.0.0-beta.26",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "rnpm": "^1.9.0"
   }
 }

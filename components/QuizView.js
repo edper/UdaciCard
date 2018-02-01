@@ -6,7 +6,10 @@ import {
     clearLocalNotification,
     setLocalNotification } from '../utils/helper'
 
+// Component for Quiz Proper
 class QuizView extends Component {
+
+    // Component state initialization
     state = {
         deck:null,
         currentCard:0,
@@ -17,12 +20,14 @@ class QuizView extends Component {
         spinValue: new Animated.Value(0),
     }
 
+    // If user chooses to do the Quiz then Local Notification for the day will be cleared and reset for another day
     componentWillMount() {
         this.setState(()=>({deck:this.props.navigation.state.params}))
         clearLocalNotification()
         setLocalNotification()       
     }
 
+    // Function for animating the Flip of a Card
     animateFlip=()=> {
         this.state.animatedValue.setValue(0)
         Animated.timing(
@@ -35,6 +40,7 @@ class QuizView extends Component {
           ).start()
     }
 
+    // Function for animating the Spinning of a Card
     animateSpin=()=> {
         this.state.spinValue.setValue(0)
         Animated.timing(
@@ -47,16 +53,19 @@ class QuizView extends Component {
         ).start()
     }
 
+    // Wrapper for Flipping a Card
     flipCard=()=> {
         this.animateFlip()
         this.setState({flipSide:true})
     }
 
+    // Accumulator for correct answers
     scoreCorrect=()=>{
         this.setState({correctCard:this.state.correctCard+1})
         this.goNextCard()
     }
 
+    // Function for moving to the next card
     goNextCard=()=> {
         this.animateFlip()
         if ((this.state.currentCard+1)===this.state.deck.deck.questions.length)
@@ -68,10 +77,13 @@ class QuizView extends Component {
             this.setState({currentCard:this.state.currentCard+1, flipSide:false})
     }
 
+
+    // Function for going back to Home Navigation
     goBack=()=> {
         this.props.navigation.navigate('Home')
     }
 
+    // Function for re-doing the Quiz
     goReplay=()=> {
         this.setState({
             currentCard:0,
@@ -82,6 +94,7 @@ class QuizView extends Component {
     }
     
     render() {
+        // Prepare values
         const flipSide = this.state.flipSide
         const endOfQue = this.state.endOfQue
         const rotateX = this.state.animatedValue.interpolate({

@@ -8,16 +8,15 @@ import {List, ListItem} from 'react-native-elements'
 
 class ListViewCards extends Component {
 
+    // Make sure state for all decks is updated
     componentDidMount(){
-        //this.setState({ decks : this.props.getAllDecks() })
         this.props.getAllDecks()
     }
 
+    // Function for navigating to Quiz starter/summary page
     gotoDetail=(item)=>(
         this.props.navigation.navigate('Quiz',{title:item.title})
     )
-        //this.props.navigation.navigate('Quiz',{title:title})
-        //const navigate = this.props.navigation.navigate('Quiz')
 
     render() {
 
