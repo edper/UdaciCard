@@ -27,6 +27,7 @@ class QuizStack extends Component {
         const {title} = this.props.navigation.state.params
         const deck = JSON.parse(this.props.decks)[title]
         return (
+            typeof deck !== 'undefined' &&
             <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
                 <View style={{flex:8, marginTop:40, marginBottom:40, alignItems:'center', justifyContent:'center', backgroundColor:lightBlue}}>
                     <Text style={{fontSize:36, color:black, fontWeight:'bold'}}>{deck.title}</Text>

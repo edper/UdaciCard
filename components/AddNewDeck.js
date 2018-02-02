@@ -38,6 +38,9 @@ class AddNewDeck extends Component {
         this.textDeckTitle.refs.deckTitle.clear()
         this.setState({title:''})
         this.textDeckTitle.refs.deckTitle.focus()
+
+        // Route to individual deck view
+        this.props.navigation.navigate('Quiz',{title:title})
     }
 
     // Show toast function
